@@ -71,7 +71,7 @@ class RoBERTaForNLI:
         
         # Determine device
         if device is None:
-            self.device = torch.device("mps" if torch.mps.is_available() else "cpu")
+            self.device = torch.device("cuda" if torch.mps.is_available() else "cpu")
         else:
             self.device = torch.device(device)
         
