@@ -45,8 +45,64 @@ def main():
     parser.add_argument("--output_dir", type=str, default=None, help="Output directory")
     parser.add_argument("--num_runs", type=int, default=None, help="Number of runs per strategy")
     parser.add_argument("--seed", type=int, default=None, help="Random seed")
+    parser.add_argument("--only_viz", type=str, default=None, help="Do You Need Only Viz?")        
     
     args = parser.parse_args()
+
+    if args.only_viz == 'True':
+        logger.info("Creating experiment runner")
+        experiment_name = 'replicability_transfer_learning_20250419_184158'
+
+        # Load configuration
+        config = load_config(args.config)
+
+        if args.output_dir is not None:
+            config["output_dir"] = args.output_dir
+        if args.num_runs is not None:
+            config["num_runs"] = args.num_runs
+        if args.seed is not None:
+            config["seed"] = args.seed
+
+        # Initialize data handler
+        logger.info("Initializing data handler")
+        data_handler = MultiNLIData(
+            model_name=config["model_name"],
+            max_length=config["max_length"],
+            cache_dir=config["cache_dir"]
+        )
+        data_handler.load_data()
+
+        experiment_runner = ExperimentRunner(
+            data_handler=data_handler,
+            model_class=RoBERTaForNLI,
+            strategies={},
+            output_dir='/export/fs06/psingh54/Replicable-Transfer-Learning/results',
+            num_runs=config["num_runs"],
+            epsilon=config["epsilon"],
+            metrics_class=ReplicabilityMetrics,
+            seed=config["seed"]
+        )
+        
+        # Extract training parameters
+        training_kwargs = {
+            "batch_size": config["batch_size"],
+            "num_epochs": config["num_epochs"],
+            "learning_rate": config["learning_rate"],
+            "warmup_proportion": config["warmup_proportion"],
+            "max_grad_norm": config["max_grad_norm"],
+            "weight_decay": config["weight_decay"],
+            "evaluation_steps": config["evaluation_steps"],
+            "logging_steps": config["logging_steps"],
+            "save_steps": config["save_steps"],
+            "source_sample_size": config["source_sample_size"],
+            "target_sample_size": config["target_sample_size"],
+            "pretrain_on_source": config["pretrain_on_source"]
+        }
+        
+        # Generate visualizations
+        logger.info("Generating visualizations")
+        experiment_runner.visualize_results()
+        sys.exit()
     
     # Load configuration
     config = load_config(args.config)

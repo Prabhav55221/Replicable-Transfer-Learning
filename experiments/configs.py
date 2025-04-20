@@ -24,13 +24,13 @@ DEFAULT_CONFIG = {
     "model_name": "roberta-base",
     "max_length": 128,
     "cache_dir": None,
-    "source_sample_size": 5000,
-    "target_sample_size": 2000,
+    "source_sample_size": 15000,
+    "target_sample_size": 6000,
     
     # Training settings
     "batch_size": 32,
     "num_epochs": 3,
-    "learning_rate": 2e-5,
+    "learning_rate": 2e-4,
     "warmup_proportion": 0.1,
     "max_grad_norm": 1.0,
     "weight_decay": 0.01,
@@ -49,13 +49,13 @@ DEFAULT_CONFIG = {
             "type": "importance_weighting",
             "params": {
                 "weight_by": "genre",
-                "smoothing_factor": 0.1
+                "smoothing_factor": 0.8
             }
         },
         "confidence_sampling": {
             "type": "confidence_sampling",
             "params": {
-                "temperature": 1.0,
+                "temperature": 0.2,
                 "min_weight": 0.1,
                 "max_weight": 10.0
             }
@@ -63,11 +63,11 @@ DEFAULT_CONFIG = {
         "curriculum": {
             "type": "curriculum",
             "params": {
-                "difficulty_metric": "loss",
+                "difficulty_metric": "confidence",
                 "start_ratio": 0.25,
                 "end_ratio": 1.0,
                 "epochs_to_max": 2,
-                "pace": "linear"
+                "pace": "exp"
             }
         }
     }

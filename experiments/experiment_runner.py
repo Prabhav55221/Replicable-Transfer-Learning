@@ -141,7 +141,7 @@ class ExperimentRunner:
                     
                     def __getitem__(self, idx):
                         return self.dataset[idx]
-                    
+                        
                     def update_weights(self, new_weights):
                         self.selection_weights = new_weights
                     
@@ -185,15 +185,6 @@ class ExperimentRunner:
                         eval_mismatched_dataset=data_splits["mismatched_dev"],
                         **run_training_kwargs
                     )
-                
-                # Fine-tune on target data
-                # logger.info("Fine-tuning on target domain")
-                # training_history = model.train(
-                #     train_dataset=target_dataset,
-                #     eval_matched_dataset=data_splits["matched_dev"],
-                #     eval_mismatched_dataset=data_splits["mismatched_dev"],
-                #     **run_training_kwargs
-                # )
 
                 # Create a copy of training kwargs without experiment-specific parameters
                 model_training_kwargs = {k: v for k, v in run_training_kwargs.items() 

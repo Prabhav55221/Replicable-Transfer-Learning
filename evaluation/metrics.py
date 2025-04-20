@@ -216,7 +216,7 @@ class ReplicabilityMetrics:
             result = {
                 "levene_statistic": float(stat),
                 "p_value": float(p_value),
-                "reject_equal_variance": p_value < 0.05
+                "reject_equal_variance": str(p_value < 0.05)
             }
         except Exception as e:
             result = {"error": str(e)}

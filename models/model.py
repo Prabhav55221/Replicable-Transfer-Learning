@@ -71,9 +71,15 @@ class RoBERTaForNLI:
         
         # Determine device
         if device is None:
-            self.device = torch.device("cuda" if torch.mps.is_available() else "cpu")
+            print(f"PyTorch version: {torch.__version__}")
+            print(f"CUDA available: {torch.cuda.is_available()}")
+            if torch.cuda.is_available():
+                print(f"CUDA device count: {torch.cuda.device_count()}")
+                print(f"Current device: {torch.cuda.current_device()}")
+                print(f"Device name: {torch.cuda.get_device_name(0)}")
+            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         else:
-            self.device = torch.device(device)
+            self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         
         logger.info(f"Using device: {self.device}")
         
