@@ -175,6 +175,10 @@ class ExperimentRunner:
                     "output_dir": run_output_dir,
                     **training_kwargs
                 }
+
+                # Create a copy of training kwargs without experiment-specific parameters
+                model_training_kwargs = {k: v for k, v in run_training_kwargs.items() 
+                                        if k not in ["source_sample_size", "target_sample_size", "pretrain_on_source"]}
                 
                 # Train on source data first if pre-training is enabled
                 if training_kwargs.get("pretrain_on_source", False):
@@ -183,12 +187,8 @@ class ExperimentRunner:
                         train_dataset=source_dataset,
                         eval_matched_dataset=data_splits["matched_dev"],
                         eval_mismatched_dataset=data_splits["mismatched_dev"],
-                        **run_training_kwargs
+                        **model_training_kwargs
                     )
-
-                # Create a copy of training kwargs without experiment-specific parameters
-                model_training_kwargs = {k: v for k, v in run_training_kwargs.items() 
-                                        if k not in ["source_sample_size", "target_sample_size", "pretrain_on_source"]}
 
                 # Train on target data
                 logger.info("Fine-tuning on target domain")

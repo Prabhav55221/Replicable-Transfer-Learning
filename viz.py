@@ -174,6 +174,15 @@ def plot_replicability_analysis(results, output_dir):
         if sensitivity > 0:
             bound_values = [2 * np.exp(-(epsilon**2 * n) / (sensitivity**2)) for n in n_values]
             plt.plot(n_values, bound_values, label=f"{strategy} (Δ={sensitivity:.2f})")
+
+    # Add this line to set y-axis to log scale:
+    plt.yscale('log')  # <-- Add this line
+
+    # Adjust y-limits to focus on meaningful probability range (0,1]
+    plt.ylim(1e-3, 2)  # Shows 0.001 to 2 range
+
+    # Consider adding a horizontal line at y=1 to indicate the maximum probability
+    plt.axhline(y=1.0, color='k', linestyle=':', alpha=0.5, label='Max probability')
     
     plt.ylabel('Replicability Failure Rate (ρ)', fontsize=12)
     plt.xlabel('Sample Size (n)', fontsize=12)

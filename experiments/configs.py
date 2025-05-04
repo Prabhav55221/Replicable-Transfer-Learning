@@ -16,7 +16,7 @@ DEFAULT_CONFIG = {
     # Experiment settings
     "experiment_name": "replicability_transfer_learning",
     "output_dir": "./results",
-    "num_runs": 5,
+    "num_runs": 10,
     "epsilon": 0.01,
     "seed": 42,
     
@@ -24,20 +24,20 @@ DEFAULT_CONFIG = {
     "model_name": "roberta-base",
     "max_length": 128,
     "cache_dir": None,
-    "source_sample_size": 15000,
-    "target_sample_size": 6000,
+    "source_sample_size": 16000,
+    "target_sample_size": 3000,
     
     # Training settings
     "batch_size": 32,
-    "num_epochs": 3,
-    "learning_rate": 2e-4,
+    "num_epochs": 10,
+    "learning_rate": 1e-5,
     "warmup_proportion": 0.1,
     "max_grad_norm": 1.0,
     "weight_decay": 0.01,
     "evaluation_steps": 500,
     "logging_steps": 100,
     "save_steps": 1000,
-    "pretrain_on_source": False,
+    "pretrain_on_source": True,
     
     # Selection strategies
     "strategies": {
@@ -49,25 +49,25 @@ DEFAULT_CONFIG = {
             "type": "importance_weighting",
             "params": {
                 "weight_by": "genre",
-                "smoothing_factor": 0.8
+                "smoothing_factor": 0.1
             }
         },
         "confidence_sampling": {
             "type": "confidence_sampling",
             "params": {
-                "temperature": 0.2,
+                "temperature": 1.0,
                 "min_weight": 0.1,
-                "max_weight": 10.0
+                "max_weight": 10
             }
         },
         "curriculum": {
             "type": "curriculum",
             "params": {
-                "difficulty_metric": "confidence",
-                "start_ratio": 0.25,
+                "difficulty_metric": "loss",
+                "start_ratio": 0.5,
                 "end_ratio": 1.0,
-                "epochs_to_max": 2,
-                "pace": "exp"
+                "epochs_to_max": 4,
+                "pace": "linear"
             }
         }
     }
