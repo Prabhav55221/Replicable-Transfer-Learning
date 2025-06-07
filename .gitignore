@@ -6,3 +6,5 @@ evaluation/__pycache__
 experiments/__pycache__
 models/__pycache__
 selection_strategies/__pycache__
+visualizations/*
+results2/

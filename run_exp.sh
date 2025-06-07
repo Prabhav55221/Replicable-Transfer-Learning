@@ -17,4 +17,4 @@ module load cuda/12.1
 
 conda activate llm_rubric_env
 
-python /export/fs06/psingh54/Replicable-Transfer-Learning/main.py --num_runs 10
+python /export/fs06/psingh54/Replicable-Transfer-Learning/main2.py --strategy_experiments --sample_size_experiments --num_runs 5
